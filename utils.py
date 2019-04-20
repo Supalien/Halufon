@@ -1,5 +1,6 @@
 import requests as req
 import pickle
+from bs4 import BeautifulSoup
 
 
 def get_hiluf(laaz_word):
@@ -23,3 +24,13 @@ def denikud(word):
         if not 1424 <= ord(char) <= 1479:
             out += char
     return out
+
+
+def define(word):
+    url = "https://milog.co.il/" + word
+    res = req.get(url)
+    soup = BeautifulSoup(res.content, "html.parser")
+    element = soup.find("div", {"class": "sr_e"})
+    if not element:
+        return
+    return element.find("div", {"class": "sr_e_txt"}).text
