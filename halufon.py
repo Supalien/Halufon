@@ -1,7 +1,5 @@
 # invite link https://discordapp.com/api/oauth2/authorize?client_id=568373639859273738&permissions=522304&scope=bot
 
-# TODO: random word
-
 import discord
 import asyncio
 import utils
