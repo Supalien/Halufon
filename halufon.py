@@ -36,7 +36,7 @@ async def on_message(message):
         laaz_word = message.content.replace(client.user.mention + " ", "")
         hiluf = utils.get_hiluf(laaz_word)
         if not hiluf:
-            await message.channel.send(f"{laaz_word} .לא נמצא")
+            await message.channel.send(f".חילוף ל{laaz_word} לא נמצא")
             return
         definition = utils.define(laaz_word)
         emb = utils.embedify(hiluf, definition)
