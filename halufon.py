@@ -32,8 +32,8 @@ async def on_message(message):
         await message.channel.send(f":חילוף של {word}", embed=emb)
 
     elif message.content == f"{client.user.mention} !עדכן" and dev:
-        await utils.update()
-        await message.channel.send("ס:Beit: :Beit: ה")
+        update = await utils.update()
+        await message.channel.send(f"עדכון אחרון: {update}")
 
     elif message.content.startswith(client.user.mention):
         laaz_word = message.content.replace(client.user.mention + " ", "")

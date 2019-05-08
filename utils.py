@@ -24,6 +24,7 @@ async def update():
     words = req.get(url).json()
     with open("words.pkl", "wb") as f:
         pickle.dump(words, f)
+    return words["update"]
 
 
 def denikud(word):
