@@ -20,7 +20,8 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.content == f"{client.user.mention} לךלישון" and message.author.id == 220946685612785664:
+    dev = message.author.id == 220946685612785664
+    if message.content == f"{client.user.mention} לךלישון" and dev:
         await client.close()
 
     if message.content == f"{client.user.mention} !אקראי":
@@ -29,6 +30,10 @@ async def on_message(message):
         definition = utils.define(utils.denikud(word))
         emb = utils.embedify(hiluf, definition)
         await message.channel.send(f":חילוף של {word}", embed=emb)
+
+    elif message.content == f"{client.user.mention} !עדכן" and dev:
+        await utils.update()
+        await message.channel.send("ס:Beit: :Beit: ה")
 
     elif message.content.startswith(client.user.mention):
         laaz_word = message.content.replace(client.user.mention + " ", "")
