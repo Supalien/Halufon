@@ -38,14 +38,27 @@ async def on_message(message):
     elif message.content.startswith(client.user.mention):
         laaz_word = message.content.replace(client.user.mention + " ", "")
         hiluf = utils.get_hiluf(laaz_word)
-        if not hiluf:
+        if not hiluf or len(hiluf) > 9:
             await message.channel.send(f".חילוף ל{laaz_word} לא נמצא")
             return
-        definition = utils.define(laaz_word)
-        emb = utils.embedify(hiluf, definition)
-        word = hiluf["word"]
-        await message.channel.send(f":חילוף של {word}", embed=emb)
-
+        if len(hiluf) == 1:
+            definition = utils.define(laaz_word)
+            emb = utils.embedify(hiluf, definition)
+            word = hiluf["word"]
+            await message.channel.send(f":חילוף ל {word}", embed=emb)
+        else:
+            emb = discord.Embed(title=".שלח את המספר הסמוך לחילוף כדי להרחיב", color=random.randint(0, 16777215))
+            for i, h in enumerate(hiluf):
+                emb.add_field(name=f"{i+1}. {h['word']}", value=h["word_hebrew"])
+            msg = await message.channel.send(f":נמצאו {len(hiluf)} חילופים ל{laaz_word}", embed=emb)
+            for i in range(1, len(hiluf)+1):
+                await msg.add_reaction(str(i)+"\N{combining enclosing keycap}")
+            reaction = await client.wait_for('reaction_add', timeout=60.0, check=lambda r, u: utils.check(r, u, msg))
+            hiluf = hiluf[int(reaction[0].emoji[0]) - 1]
+            definition = utils.define(utils.denikud(hiluf["word_hebrew"]))
+            emb = utils.embedify(hiluf, definition)
+            word = hiluf["word"]
+            await message.channel.send(f":חילוף ל {word}", embed=emb)
 
 with open("Token.txt") as f:
     token = f.read()
