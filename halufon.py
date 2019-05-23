@@ -41,7 +41,7 @@ async def on_message(message):
         if not hiluf or len(hiluf) > 9:
             await message.channel.send(f".חילוף ל{laaz_word} לא נמצא")
             return
-        if len(hiluf) == 1:
+        if type(hiluf) == dict:
             definition = utils.define(laaz_word)
             emb = utils.embedify(hiluf, definition)
             word = hiluf["word"]
