@@ -15,6 +15,8 @@ def get_hiluf(laaz_word):
             return word
         if denikud(word["word"]).startswith(denikud(laaz_word)):
             findings.append(word)
+    if len(findings) == 1:
+        return findings[0]
     if len(findings) > 1:
         return findings
 
