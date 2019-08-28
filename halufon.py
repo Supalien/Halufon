@@ -39,7 +39,7 @@ async def on_message(message):
         laaz_word = message.content.replace(client.user.mention + " ", "")
         hiluf = utils.get_hiluf(laaz_word)
         if not hiluf or len(hiluf) > 9:
-            await message.channel.send(f".חילוף ל{laaz_word} לא נמצא")
+            await message.channel.send(f".חילוף למילה {laaz_word} לא נמצא")
             return
         if type(hiluf) == dict:
             definition = utils.define(laaz_word)
