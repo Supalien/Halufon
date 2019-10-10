@@ -12,8 +12,10 @@ def get_hiluf(laaz_word):
     findings = []
     for word in words["words"]:
         if denikud(word["word"]) == denikud(laaz_word):
-            return word
-        if denikud(word["word"]).startswith(denikud(laaz_word)):
+            findings.append(word)
+        elif denikud(word["word"]).startswith(denikud(laaz_word)):
+            findings.append(word)
+        elif denikud(laaz_word) in denikud(word["word"]):
             findings.append(word)
     if len(findings) == 1:
         return findings[0]
@@ -24,7 +26,6 @@ def get_random_hiluf():
     with open("words.pkl", "rb") as f:
         words = pickle.load(f)
         return random.choice(words["words"])
-
 
 async def update():
     url = "https://halufon.hebrew-academy.org.il/words.php"
