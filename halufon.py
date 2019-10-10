@@ -38,7 +38,7 @@ async def on_message(message):
     elif message.content.startswith(client.user.mention):
         laaz_word = message.content.replace(client.user.mention + " ", "")
         hiluf = utils.get_hiluf(laaz_word)
-        if not hiluf or len(hiluf) > 9:
+        if not hiluf:
             await message.channel.send(f".חילוף למילה {laaz_word} לא נמצא")
             return
         if type(hiluf) == dict:
@@ -47,7 +47,8 @@ async def on_message(message):
             word = hiluf["word"]
             await message.channel.send(f":חילוף ל {word}", embed=emb)
         else:
-            emb = discord.Embed(title=".שלח את המספר הסמוך לחילוף כדי להרחיב", color=random.randint(0, 16777215))
+            hiluf = hiluf[:9]
+            emb = discord.Embed(title="לחץ על המספרים למטה כדי להרחיב. :1234:", color=random.randint(0, 16777215))
             for i, h in enumerate(hiluf):
                 emb.add_field(name=f"{i+1}. {h['word']}", value=h["word_hebrew"])
             msg = await message.channel.send(f":נמצאו {len(hiluf)} חילופים ל{laaz_word}", embed=emb)
