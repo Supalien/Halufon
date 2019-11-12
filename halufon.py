@@ -36,7 +36,7 @@ async def on_message(message):
         await message.channel.send(f"עדכון אחרון: {update}")
 
     elif message.content.startswith(client.user.mention):
-        laaz_word = message.content.replace(client.user.mention + " ", "")
+        laaz_word = message.content.replace(client.user.mention, "").strip()
         hiluf = utils.get_hiluf(laaz_word)
         if not hiluf:
             await message.channel.send(f".חילוף למילה {laaz_word} לא נמצא")
