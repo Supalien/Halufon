@@ -48,12 +48,13 @@ async def on_message(message):
             await message.channel.send(f":חילוף ל {word}", embed=emb)
         else:
             hiluf = hiluf[:9]
-            emb = discord.Embed(title="לחץ על המספרים למטה כדי להרחיב. :1234:", color=random.randint(0, 16777215))
+            emb = discord.Embed(
+                title="לחץ על המספרים למטה כדי להרחיב. :1234:", color=random.randint(0, 16777215))
             for i, h in enumerate(hiluf):
                 emb.add_field(name=f"{i+1}. {h['word']}", value=h["word_hebrew"])
             msg = await message.channel.send(f":נמצאו {len(hiluf)} חילופים ל{laaz_word}", embed=emb)
-            for i in range(1, len(hiluf)+1):
-                await msg.add_reaction(str(i)+"\N{combining enclosing keycap}")
+            for i in range(1, len(hiluf) + 1):
+                await msg.add_reaction(str(i) + "\N{combining enclosing keycap}")
             reaction = await client.wait_for('reaction_add', timeout=60.0, check=lambda r, u: utils.check(r, u, msg))
             hiluf = hiluf[int(reaction[0].emoji[0]) - 1]
             definition = utils.define(utils.denikud(hiluf["word_hebrew"]))
