@@ -4,6 +4,7 @@ import discord
 import asyncio
 import utils
 import random
+import re
 
 client = discord.Client()
 
@@ -20,23 +21,27 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    if message.author.bot: return
     dev = message.author.id == 220946685612785664
-    if message.content == f"{client.user.mention} לךלישון" and dev:
+    match = re.match(r"<@!(\d+)>\s+((.+\s*)+)", message.content)
+    if not match or match.group(1) != str(client.user.id): return
+    cont = match.group(2)
+    if cont == "לךלישון" and dev:
         await client.close()
 
-    if message.content == f"{client.user.mention} !אקראי":
+    elif cont == "!אקראי":
         hiluf = utils.get_random_hiluf()
         word = hiluf["word"]
         definition = utils.define(utils.denikud(word))
         emb = utils.embedify(hiluf, definition)
         await message.channel.send(f":חילוף של {word}", embed=emb)
 
-    elif message.content == f"{client.user.mention} !עדכן" and dev:
+    elif cont == "!עדכן" and dev:
         update = await utils.update()
         await message.channel.send(f"עדכון אחרון: {update}")
 
-    elif message.content.startswith(client.user.mention):
-        laaz_word = message.content.replace(client.user.mention, "").strip()
+    else:
+        laaz_word = cont.strip()
         hiluf = utils.get_hiluf(laaz_word)
         if not hiluf:
             await message.channel.send(f".חילוף למילה {laaz_word} לא נמצא")
